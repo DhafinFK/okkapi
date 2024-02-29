@@ -8,12 +8,20 @@ class Sponsor(BaseModel):
     def __str__(self):
         return f'sponsor - {self.nama}'
     
+    
+class Pembicara(BaseModel):
+    nama = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f'{self.nama}'
+    
 
 class Acara(BaseModel):
     nama = models.CharField(max_length=200, unique=True)
     waktu_mulai = models.DateTimeField(help_text="Tanggal dan waktu mulai acara")
     waktu_selesai = models.DateTimeField(help_text="Tanggal dan waktu selesai acara")
     sponsor_list = models.ManyToManyField(Sponsor, through='SponsorAcara')
+    pembicara_list = models.ManyToManyField(Pembicara)
 
     def __str__(self):
         return (self.nama)
@@ -37,25 +45,3 @@ class SponsorAcara(BaseModel):
     class Meta:
         unique_together = ['sponsor', 'acara']
     
-
-class Materi(BaseModel):
-    acara = models.ForeignKey(Acara, on_delete=models.CASCADE)
-    judul = models.CharField(max_length=200)
-    
-    def __str__(self):
-        return f'Pembicara {self.pembicara} untuk acara {self.acara.nama}'
-    
-
-class Pembicara(BaseModel):
-    nama = models.CharField(max_length=200)
-
-    def __str__(self):
-        return f'{self.nama}'
-
-
-class PembicaraMateri(BaseModel):
-    pembicara = models.CharField(max_length=200)
-    materi = models.ForeignKey(Materi, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return f'pembicara - {self.pembicara}'
