@@ -34,6 +34,28 @@ class MentoringSerializer(serializers.ModelSerializer):
         model = MentoringSession
         fields = ['id', 'kelompok', 'date', 'start_time', 'end_time', 'attendees']
 
+    def check_attendees(self, attrs):
+        attendees = attrs.get('attendees', None)
+
+        if attendees:
+            mentees = self.instance.kelompok.mentee_set.all()
+            for mentee_id in attendees:
+                if mentee_id not in mentees:
+                    raise serializers.ValidationError('mentee yang dimasukkan harus dari kelompok')
+                
+        return attrs
+
+    def validate(self, attrs):
+        attrs = self.check_attendees(attrs)
+
+        start_time = attrs.get('start_time', getattr(self.instance, 'start_time', None))
+        end_time = attrs.get('end_time', getattr(self.instance, 'end_time', None))
+
+        if start_time >= end_time:
+            raise serializers.ValidationError("Start time harus sebelum waktu selesai")
+        
+        return attrs
+
     def create(self, validated_data):
         attendees_data = validated_data.pop('attendees', [])
         mentoring_session = MentoringSession.objects.create(**validated_data)

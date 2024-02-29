@@ -90,7 +90,7 @@ class MentoringDetail(APIView):
             raise Http404
 
     def get(self, request, nomor, id, format=None):
-        session = self.get_mentoring_session(nomor)
+        session = self.get_mentoring_session(nomor, id)
         serializer = MentoringSerializer(session)
         return Response(serializer.data)
     
@@ -114,5 +114,6 @@ class MentoringDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
