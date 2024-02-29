@@ -105,7 +105,6 @@ class MentoringDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, nomor, id, format=None):
@@ -114,6 +113,5 @@ class MentoringDetail(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     

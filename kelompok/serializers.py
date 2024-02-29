@@ -36,9 +36,10 @@ class MentoringSerializer(serializers.ModelSerializer):
 
     def check_attendees(self, attrs):
         attendees = attrs.get('attendees', None)
+        kelompok = attrs.get('kelompok', getattr(self.instance, 'kelompok', None))
 
         if attendees:
-            mentees = self.instance.kelompok.mentee_set.all()
+            mentees = kelompok.mentee_set.all()
             for mentee_id in attendees:
                 if mentee_id not in mentees:
                     raise serializers.ValidationError('mentee yang dimasukkan harus dari kelompok')

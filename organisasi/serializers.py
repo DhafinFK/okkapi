@@ -37,6 +37,29 @@ class RapatSerializer(serializers.ModelSerializer):
         model = Rapat
         fields = ['id', 'bidang', 'date', 'start_time', 'end_time', 'attendees']
 
+    def check_attendees(self, attrs):
+        attendees = attrs.get('attendees', None)
+        bidang = attrs.get('bidang', getattr(self.instance, 'bidang', None))
+
+        if attendees:
+            all_panitia = bidang.panitia_set.all()
+            for panitia_id in attendees:
+                if panitia_id not in all_panitia:
+                    raise serializers.ValidationError('panitia yang dimasukkan harus dari bidang')
+                
+        return attrs
+
+    def validate(self, attrs):
+        attrs = self.check_attendees(attrs)
+
+        start_time = attrs.get('start_time', getattr(self.instance, 'start_time', None))
+        end_time = attrs.get('end_time', getattr(self.instance, 'end_time', None))
+
+        if start_time >= end_time:
+            raise serializers.ValidationError("Start time harus sebelum waktu selesai")
+        
+        return attrs
+
     def create(self, validated_data):
         attendees_data = validated_data.pop('attendees', [])
         mentoring_session = Rapat.objects.create(**validated_data)
