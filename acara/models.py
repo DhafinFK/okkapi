@@ -21,7 +21,7 @@ class Acara(BaseModel):
     waktu_mulai = models.DateTimeField(help_text="Tanggal dan waktu mulai acara")
     waktu_selesai = models.DateTimeField(help_text="Tanggal dan waktu selesai acara")
     sponsor_list = models.ManyToManyField(Sponsor, through='SponsorAcara')
-    pembicara_list = models.ManyToManyField(Pembicara)
+    pembicara_list = models.ManyToManyField(Pembicara, related_name="mengisi")
 
     def __str__(self):
         return (self.nama)
@@ -34,8 +34,8 @@ class SponsorAcara(BaseModel):
         ('Silver', 'Silver'),
     ]
 
-    sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE)
-    acara = models.ForeignKey(Acara, on_delete=models.CASCADE)
+    sponsor = models.ForeignKey(Sponsor, on_delete=models.CASCADE, related_name="sponsorship")
+    acara = models.ForeignKey(Acara, on_delete=models.CASCADE, related_name="sponsorship")
     package = models.CharField(max_length=200, choices=PACKAGE_CHOICES)
 
     def __str__(self):
