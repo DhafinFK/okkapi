@@ -5,13 +5,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import BidangKepanitiaanSerializer, RapatSerializer
 from .models import BidangKepanitiaan, Rapat
+from common.permissions import IsPanitiaPermission
 
 # Create your views here.
 
 class BidangList(APIView):
-    """
-    List semua fakultas dan create bidang baru
-    """
+    permission_classes = [IsPanitiaPermission]
+
     def get(self, requesst, format=None):
         bidang = BidangKepanitiaan.objects.all()
         serializer = BidangKepanitiaanSerializer(bidang, many=True)

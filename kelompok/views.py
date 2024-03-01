@@ -5,14 +5,13 @@ from rest_framework import status
 from django.http import Http404
 from .serializers import KelompokSerializer, MentoringSerializer
 from .models import *
+from common.permissions import IsPanitiaPermission
 
 # Create your views here.
 
 
 class KelompokList(APIView):
-    """
-    List semua kelompok dan create kelompok baru
-    """
+
     def get(self, requesst, format=None):
         kelompok = Kelompok.objects.all()
         serializer = KelompokSerializer(kelompok, many=True)

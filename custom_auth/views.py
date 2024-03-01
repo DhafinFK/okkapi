@@ -9,6 +9,7 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
 
+
 class UserLoginView(APIView):
     def post(self, request):
         user = authenticate(username=request.data['username'], password=request.data['password'])
