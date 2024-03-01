@@ -68,3 +68,29 @@ class SponsorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sponsor
         fields = ['id', 'nama', 'paket_sponsorship']
+
+
+class SponsorAcaraSerializer(serializers.ModelSerializer):
+    sponsor_id = serializers.PrimaryKeyRelatedField(
+        queryset=Sponsor.objects.all(),
+        source='sponsor'
+    )
+    acara_id = serializers.PrimaryKeyRelatedField(
+        queryset=Acara.objects.all(),
+        source='acara'
+    )
+    
+    class Meta:
+        model = SponsorAcara
+        fields = ['id', 'sponsor_id', 'acara_id', 'package']
+        extra_kwargs = {
+            'sponsor': {'write_only': True},
+            'acara': {'write_only': True}
+        }
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['sponsor_nama'] = instance.sponsor.nama
+        representation['acara_nama'] = instance.acara.nama
+        return representation
+    

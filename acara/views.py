@@ -90,8 +90,8 @@ class PembicaraDetail(APIView):
             raise Http404
 
     def get(self, request, id, format=None):
-        Pembicara = self.get_pembicara(id)
-        serializer = PembicaraSerializer(Pembicara)
+        pembicara = self.get_pembicara(id)
+        serializer = PembicaraSerializer(pembicara)
         return Response(serializer.data)
     
     def delete(self, request, id, format=None):
@@ -117,4 +117,108 @@ class PembicaraDetail(APIView):
         print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
         
+
+class SponsorList(APIView):
+    def get(self, request):
+        sponsor = Sponsor.objects.all()
+        serializer = SponsorSerializer(sponsor, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = SponsorSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+
+class SponsorDetail(APIView):
+    
+    def get_sponsor(self, id):
+        try:
+            sponsor = Sponsor.objects.get(id=id)
+            return sponsor
+        except Sponsor.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        sponsor = self.get_sponsor(id)
+        serializer = SponsorSerializer(sponsor)
+        return Response(serializer.data)
+    
+    def delete(self, request, id, format=None):
+        sponsor = self.get_sponsor(id)
+        sponsor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def put(self, request, id, format=None):
+        sponsor = self.get_sponsor(id)
+        serializer = SponsorSerializer(sponsor, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, id, format=None):
+        sponsor = self.get_sponsor(id)
+        serializer = SponsorSerializer(sponsor, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+class SponsorAcaraList(APIView):
+    def get(self, request):
+        sponsor_acara = SponsorAcara.objects.all()
+        serializer = SponsorAcaraSerializer(sponsor_acara, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = SponsorAcaraSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+    
+
+class SponsorAcaraDetail(APIView):
+    def get_sponsor_acara(self, id):
+        try:
+            sponsor = SponsorAcara.objects.get(id=id)
+            return sponsor
+        except SponsorAcara.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id, format=None):
+        sponsor_acara = self.get_sponsor_acara(id)
+        serializer = SponsorAcaraSerializer(sponsor_acara)
+        return Response(serializer.data)
+    
+    def delete(self, request, id, format=None):
+        sponsor_acara = self.get_sponsor_acara(id)
+        sponsor_acara.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    def put(self, request, id, format=None):
+        sponsor_acara = self.get_sponsor_acara(id)
+        serializer = SponsorAcaraSerializer(sponsor_acara, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, id, format=None):
+        sponsor_acara = self.get_sponsor_acara(id)
+        serializer = SponsorAcaraSerializer(sponsor_acara, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
     
