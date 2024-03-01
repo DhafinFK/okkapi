@@ -165,7 +165,7 @@ def create_bidang_kepanitiaan(reqeust):
         (VISDES_DOKUM, 'Visual Design dan Dokumentasi'),
     ]
 
-    for tups in BIDANG_BPH_CHOICES:
-        BidangKepanitiaan.objects.create(nama=tups[1], bidang_panitia='BPH')
+    for tups in BIDANG_PI_CHOICES:
+        BidangKepanitiaan.objects.create(nama=tups[1], bidang_panitia='PI')
 
     return HttpResponse('berhasil membuat bidang-bidang silahkan dilihat')

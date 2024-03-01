@@ -1,0 +1,11 @@
+POST http://localhost:8000/api/auth/register/
+Content-Type: application/json
+
+{
+    "username": "keiradiaz",
+    "email": "keira@mail.com",
+    "password": "bismillahgacor",
+    "npm": "2306256394"
+}
+
+

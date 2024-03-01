@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-
     'okk.apps.OkkConfig',
     'common.apps.CommonConfig',
     'acara.apps.AcaraConfig',
@@ -49,9 +48,19 @@ INSTALLED_APPS = [
     'mahasiswa.apps.MahasiswaConfig',
     'api.apps.ApiConfig',
     'organisasi.apps.OrganisasiConfig',
-
+    'custom_auth.apps.CustomAuthConfig',
     'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Add this line
+    ],
+}
+
+AUTH_USER_MODEL = 'custom_auth.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

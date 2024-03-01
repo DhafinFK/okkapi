@@ -5,4 +5,5 @@ urlpatterns = [
     path('mahasiswa/', include('mahasiswa.urls')),
     path('bidang/', include('organisasi.urls')),
     path('kelompok/', include('kelompok.urls')),
+    path('auth/', include('custom_auth.urls')),
 ]
