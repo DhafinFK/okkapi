@@ -6,6 +6,7 @@ from rest_framework import status
 from .serializers import BidangKepanitiaanSerializer, RapatSerializer
 from .models import BidangKepanitiaan, Rapat
 from custom_auth.permissions import IsPanitiaPermission
+from django.db import transaction
 
 # Create your views here.
 
@@ -76,6 +77,7 @@ class RapatList(APIView):
         serializer = RapatSerializer(sessions, many=True)
         return Response(serializer.data)
     
+    @transaction.atomic
     def post(self, request, bidang_id, format=None):
         serializer = RapatSerializer(data=request.data)
         if serializer.is_valid():
@@ -102,11 +104,13 @@ class RapatDetail(APIView):
         serializer = RapatSerializer(session)
         return Response(serializer.data)
     
+    @transaction.atomic
     def delete(self, request, bidang_id, id, format=None):
         session = self.get_mentoring_session(bidang_id, id)
         session.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+    @transaction.atomic
     def put(self, request, bidang_id, id, format=None):
         session = self.get_mentoring_session(bidang_id, id)
         serializer = RapatSerializer(session, data=request.data)
@@ -116,6 +120,7 @@ class RapatDetail(APIView):
         print(serializer.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic
     def patch(self, request, bidang_id, id, format=None):
         session = self.get_mentoring_session(bidang_id, id)
         serializer = RapatSerializer(session, data=request.data, partial=True)
