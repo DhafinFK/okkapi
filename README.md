@@ -108,6 +108,38 @@
 | `PUT`         | nomor, mahasiswa_id, jalur_masuk | id, mahasiswa, kelompok, jalur_masuk | Superuser |
 | `PATCH`       | nomor, mahasiswa_id, jalur_masuk | id, mahasiswa, kelompok, jalur_masuk| Superuser |
 
+## BidangPanitia Model
+
+### URI Endpoint: api/bidang/
+| METHOD        | JSON-ARGUMENTS | RETURNS   | AUTHORIZED USERS |
+| :-----------: | :------------: | :-------: | :--------------: |
+| `GET`         |       -        | id, nama, bidang_panitia, anggota | Superuser, Panitia |
+| `POST`        | nama, bidang_panitia | id, nama, bidang_panitia, anggota | Superuser, Panitia |
+
+### URI Endpoint: api/bidang/<bidang_id>/
+| METHOD        | JSON-ARGUMENTS | RETURNS   | AUTHORIZED USERS |
+| :-----------: | :------------: | :-------: | :--------------: |
+| `GET`         |        -       | id, nama, bidang_panitia, anggota | Superuser, Panitia |
+| `DELETE`      |        -       |     ""    | Superuser, Panitia |
+| `PUT`         | nama, bidang_panitia | id, nama, bidang_panitia, anggota | Superuser, Panitia |
+| `PATCH`       | nama, bidang_panitia | id, nama, bidang_panitia, anggota | Superuser, Panitia |
+
+## Rapat Model
+
+### URI Endpoint: api/bidang/<bidang_id>/sessions/
+| METHOD        | JSON-ARGUMENTS | RETURNS   | AUTHORIZED USERS |
+| :-----------: | :------------: | :-------: | :--------------: |
+| `GET`         |       -        | id, bidang, date, start_time, end_time, attendees | Superuser, Panitia |
+| `POST`        | bidang, date, start_time, end_time, attendees | id, bidang, date, start_time, end_time, attendees | Superuser, Panitia |
+
+### URI Endpoint: api/bidang/<bidang_id>/sessions/<session_id>/
+| METHOD        | JSON-ARGUMENTS | RETURNS   | AUTHORIZED USERS |
+| :-----------: | :------------: | :-------: | :--------------: |
+| `GET`         |        -       |id, bidang, date, start_time, end_time, attendees | Superuser, Panitia |
+| `DELETE`      |        -       |     ""    | Superuser, Panitia |
+| `PUT`         | bidang, date, start_time, end_time, attendees | id, bidang, date, start_time, end_time, attendees | Superuser, Panitia |
+| `PATCH`       | bidang, date, start_time, end_time, attendees | id, bidang, date, start_time, end_time, attendees | Superuser, Panitia |
+
 ## Kelompok Model
 
 ### URI Endpoint: api/kelompok/
