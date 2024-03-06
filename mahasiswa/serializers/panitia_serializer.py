@@ -26,20 +26,16 @@ class PanitiaSerializer(serializers.ModelSerializer):
     def get_bidang(self, instance):
         bidang = instance.bidang
         return bidang.nama
+
+
     
-    def validate_json_attributes(self, data):
+    def validate(self, data):
         jabatan = data.get('jabatan', getattr(self.instance, 'jabatan', None))
         bidang_id = data.get('bidang_id', getattr(self.instance, 'bidang_id', None))
         
         if (not bidang_id) or (not jabatan):
             raise ValidationError('json fields kurang')
         
-        return data
-
-    def validate_jabatan(self, data):
-        jabatan = data.get('jabatan')
-        bidang_id = data.get('bidang_id')
-
         # Fetch the bidang_kepanitiaan instance to check its type
         try:
             bidang = BidangKepanitiaan.objects.get(id=bidang_id)
@@ -58,19 +54,18 @@ class PanitiaSerializer(serializers.ModelSerializer):
         expected_bidang = valid_combinations.get(jabatan)
         if bidang.bidang_panitia != expected_bidang:
             raise ValidationError(f"The jabatan '{jabatan}' is not valid for the bidang '{bidang.bidang_panitia}'.")
-
-        return data
-    
-    def validate(self, data):
-        data = self.validate_json_attributes(data)
-        data = self.validate_jabatan(data)
         
         jabatan = data.get('jabatan')
         bidang_id = data.get('bidang_id')
 
         panitia_instance = Panitia.objects.filter(jabatan=jabatan, bidang__id=bidang_id).first()
         if panitia_instance and jabatan != "STAFF":
-            raise ValidationError('Jabatan sudah diambil oleh panitia lain')
+            if jabatan == "BPH-WAPJ":
+                wapj = len(Panitia.objects.filter(jabatan=jabatan, bidang__id=bidang_id))
+                if wapj >= 2:
+                    raise ValidationError('WAPJ hanya bisa 2 per bidang')
+            else:
+                raise ValidationError('Jabatan sudah diambil oleh panitia lain')
                 
         return data
     
