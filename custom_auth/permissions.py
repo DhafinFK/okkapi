@@ -13,7 +13,7 @@ class IsMentorPermission(permissions.BasePermission):
         if not request.user.is_authenticated:
             return False
 
-        return request.user.is_mentor or request.user.is_supersuser
+        return request.user.is_mentor or request.user.is_superuser
     
 
 class IsSuperUser(permissions.BasePermission):

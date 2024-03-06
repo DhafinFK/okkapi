@@ -51,4 +51,9 @@ GET http://localhost:8000/api/bidang/
 Content-Type: application/json
 Authorization: Token 451bc553be0e4e303ecf313f3246807962c71d0a
 
-{}
+{
+    "username": "<insert username>",
+    "email": "<insert email>",
+    "password": '"<insert password>",
+    ""
+}

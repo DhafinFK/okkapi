@@ -5,6 +5,7 @@ from .serializers import FakultasSerializer
 from django.http import HttpResponse, Http404
 from .models import *
 from organisasi.models import BidangKepanitiaan
+from custom_auth.permissions import IsSuperUser
 
 # Create your views here.
 
@@ -12,6 +13,8 @@ class FakultasList(APIView):
     """
     List semua fakultas dan create fakultas baru
     """
+    permission_classes = [IsSuperUser]
+
     def get(self, requesst, format=None):
         fakultas = Fakultas.objects.all()
         serializer = FakultasSerializer(fakultas, many=True)
@@ -28,6 +31,8 @@ class FakultasDetail(APIView):
     """
     Detail, buat, update fakultas tertentu
     """
+    permission_classes = [IsSuperUser]
+
     def get_fakultas(self, name):
         try:
             fakultas = Fakultas.objects.get(nama_panggilan=name)
