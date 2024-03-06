@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import *
 from django.http import Http404
 from .models import *
+from custom_auth.permissions import IsSuperUser
 
 # Create your views here.
 
@@ -11,6 +12,8 @@ class MahasiswaList(APIView):
     """
     List semua mahasisswa dan data terkait
     """
+    permission_classes = [IsSuperUser]
+
     def get(self, request, format=None):
         mahasiswa = Mahasiswa.objects.all()
         serializer = MahasiswaSerializer(mahasiswa, many=True)
@@ -26,6 +29,9 @@ class MahasiswaList(APIView):
     
 
 class MahasiswaDetail(APIView):
+
+    permission_classes = [IsSuperUser]
+
     def get_mahasiswa(self, id):
         try:
             mahasiswa = Mahasiswa.objects.get(id=id)
@@ -62,6 +68,8 @@ class MahasiswaDetail(APIView):
 
 class MentorList(APIView):
 
+    permission_classes = [IsSuperUser]
+
     def get(self, request, format=None):
         semua_mentor = Mentor.objects.all()
         serializer = MentorSerializer(semua_mentor, many=True)
@@ -76,6 +84,8 @@ class MentorList(APIView):
     
     
 class MenteeDetail(APIView):
+
+    permission_classes = [IsSuperUser]
     
     def get_mentee(self, id):
         try:
@@ -115,6 +125,8 @@ class MenteeDetail(APIView):
 
 class MenteeList(APIView):
 
+    permission_classes = [IsSuperUser]
+
     def get(self, request, format=None):
         semua_mentee = Mentee.objects.all()
         serializer = MenteeSerializer(semua_mentee, many=True)
@@ -129,6 +141,8 @@ class MenteeList(APIView):
     
     
 class MentorDetail(APIView):
+
+    permission_classes = [IsSuperUser]
     
     def get_mentor(self, id):
         try:
@@ -165,6 +179,9 @@ class MentorDetail(APIView):
     
 
 class PanitiaList(APIView):
+
+    permission_classes = [IsSuperUser]
+
     def get(self, request, format=None):
         semua_panitia = Panitia.objects.all()
         serializer = PanitiaSerializer(semua_panitia, many=True)
@@ -180,6 +197,9 @@ class PanitiaList(APIView):
     
 
 class PanitiaDetail(APIView):
+
+    permission_classes = [IsSuperUser]
+
     def get_panitia(self, id):
         try:
             panitia = Panitia.objects.get(id=id)

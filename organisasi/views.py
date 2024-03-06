@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import BidangKepanitiaanSerializer, RapatSerializer
 from .models import BidangKepanitiaan, Rapat
-from common.permissions import IsPanitiaPermission
+from custom_auth.permissions import IsPanitiaPermission
 
 # Create your views here.
 
@@ -29,6 +29,9 @@ class BidangDetail(APIView):
     """
     Detail, buat, update bidang tertentu
     """
+    permission_classes = [IsPanitiaPermission]
+
+
     def get_bidang(self, id):
         try:
             bidang = BidangKepanitiaan.objects.get(id=id)
@@ -64,6 +67,10 @@ class BidangDetail(APIView):
     
 
 class RapatList(APIView):
+
+    permission_classes = [IsPanitiaPermission]
+
+
     def get(self, request, bidang_id, format=None):
         sessions = Rapat.objects.filter(bidang=bidang_id)
         serializer = RapatSerializer(sessions, many=True)
@@ -79,8 +86,10 @@ class RapatList(APIView):
 
 class RapatDetail(APIView):
     """
-    Detail, buat, update kelompok tertentu
+    Detail, buat, update Rapat tertentu
     """
+    permission_classes = [IsPanitiaPermission]
+
     def get_mentoring_session(self, bidang_id, id):
         try:
             session = Rapat.objects.get(id=id, bidang_id=bidang_id)

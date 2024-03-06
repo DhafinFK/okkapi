@@ -1,16 +1,17 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
 from .serializers import KelompokSerializer, MentoringSerializer
 from .models import *
-from common.permissions import IsPanitiaPermission
+from custom_auth.permissions import IsMentorPermission
 
 # Create your views here.
 
 
 class KelompokList(APIView):
+
+    permission_classes = [IsMentorPermission]
 
     def get(self, requesst, format=None):
         kelompok = Kelompok.objects.all()
@@ -28,6 +29,9 @@ class KelompokDetail(APIView):
     """
     Detail, buat, update kelompok tertentu
     """
+
+    permission_classes = [IsMentorPermission]
+
     def get_fakultas(self, nomor):
         try:
             kelompok = Kelompok.objects.get(nomor=nomor)
@@ -64,6 +68,9 @@ class KelompokDetail(APIView):
     
 
 class MentoringList(APIView):
+
+    permission_classes = [IsMentorPermission]
+
     def get(self, request, nomor, format=None):
         sessions = MentoringSession.objects.filter(kelompok__nomor=nomor)
         serializer = MentoringSerializer(sessions, many=True)
@@ -81,6 +88,9 @@ class MentoringDetail(APIView):
     """
     Detail, buat, update kelompok tertentu
     """
+
+    permission_classes = [IsMentorPermission]
+
     def get_mentoring_session(self, nomor, id):
         try:
             session = MentoringSession.objects.get(id=id, kelompok__nomor=nomor)

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from mahasiswa.views import *
 
 urlpatterns = [
     path('', MahasiswaList.as_view()),
